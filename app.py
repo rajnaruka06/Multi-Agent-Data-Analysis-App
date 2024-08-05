@@ -1,27 +1,3 @@
-"""
-Make agent with memory -- Done
-Make agent with dashboard creation support -- Done
-Make agent with Analyst Description support -- Done
-Make mongoDB agent
-Make summarization Agent -- Working...
-Make Routing between summarization and Dashboard Agent
-"""
-# db_agent_template = """Given an input question, just create a syntactically correct {dialect} query to run. 
-# Do not include any CREATE, DELETE, UPDATE, or ALTER statements in your responses.
-# You can use Common Table Expressions (CTEs) for data manipulation
-# Use the following format:
-
-# Question: Question here
-# SQLQuery: SQL Query to run
-
-# Only use the following tables:
-
-# {table_info}.
-
-# Question: {input}
-# SQLQuery: 
-# """
-
 import streamlit as st
 from dotenv import load_dotenv
 import os
@@ -44,7 +20,7 @@ def getDB():
     password = os.getenv('POSTGRES_PASSWORD')
     host = os.getenv('POSTGRES_HOST')
     port = os.getenv('POSTGRES_PORT')
-    database = "chinook"
+    database = os.getenv('POSTGRES_DB_NAME')
     postgresql_uri = f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}"
 
     db = SQLDatabase.from_uri(postgresql_uri)
@@ -52,12 +28,6 @@ def getDB():
 
 @st.cache_resource
 def getLLM(model_path = None):
-    # if model_path is None:
-    #     model_base_path = "C:\\Users\\rajna\\Desktop\\Studies\\Jupyter Notebook\\RAGS\\resources"
-    #     model_name = "capybarahermes-2.5-mistral-7b.Q4_K_M.gguf"
-    #     model_path = os.path.join(model_base_path, model_name)
-    
-    # llm = GPT4All(model=model_path, device="cuda", max_tokens=2048)
     llm = ChatOpenAI(
         model="gpt-4o",
         temperature=0,
@@ -132,8 +102,8 @@ class NoDataFoundException(Exception):
 if __name__ == "__main__":
     load_dotenv()
 
-    st.title("PoliQ")
-    st.header("Project Description goes here...")
+    st.title("Data Analyst Assistant")
+    st.header("SOme cool description here...")
 
     ## Init Resources
     db = getDB()
@@ -238,16 +208,16 @@ if __name__ == "__main__":
                 , "previous_queries": prev_queries
             }).content.strip()
 
-        print('---')
-        print(sql_query)
-        # print(prev_queries)
+        # print('---')
+        # print(sql_query)
+        # # print(prev_queries)
 
         sql_query = sql_query.replace('`', '')
         if sql_query.startswith('sql'): sql_query = sql_query[len('sql'):].strip()
         # if sql_query.startswith('SQLQuery:'): sql_query = sql_query[len('SQLQuery:'):].strip()
         if 'SQLQuery:' in sql_query: sql_query = sql_query.split('SQLQuery:')[1].strip()
-        print('---')
-        print(sql_query)
+        # print('---')
+        # print(sql_query)
 
         if show_sql:
             st.write("---")
