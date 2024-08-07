@@ -163,6 +163,7 @@ if __name__ == "__main__":
     Use the following information to generate the visualization description:
     
     Dataset Information:
+    - User query for the data: {input}
     - DataFrame Head (df.head()): {head}
     - DataFrame Info (df.info()): {info}
     - DataFrame Description (df.describe()): {describe}
@@ -280,6 +281,7 @@ if __name__ == "__main__":
                         "head": head
                         , "info": info
                         , "describe": data_desc
+                        , "input": user_query
                     }).content.strip()
 
                     if show_analyst_desc:
