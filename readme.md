@@ -25,7 +25,7 @@ Data Analyst Assistant is a Streamlit-based application that facilitates SQL que
 
     ```bash
     git clone https://github.com/rajnaruka06/Multi-Agent-Data-Analysis-App.git
-    cd poliq
+    cd Multi-Agent-Data-Analysis-App
     ```
 
 2. **Create a virtual environment and activate it:**
