@@ -135,10 +135,11 @@ if __name__ == "__main__":
     SQLQuery: 
     """
 
-    summary_agent_template = """You are a data analyst. Given a pandas DataFrame, summarize the data in a consize user-readable format. 
-    Describe the key insights, trends, and any notable observations from the data. 
+    summary_agent_template = """You are a data analyst. Given a user query and a pandas DataFrame, summarize the data in a user-readable format.
+    Describe the key insights, trends, and any notable observations from the data that answer the user query.
     Make sure to include statistics, comparisons, and any relevant details that provide a clear understanding of the data.
     
+    User Query: {user_query}
     DataFrame:
     {dataframe}
     Summary:
@@ -261,6 +262,7 @@ if __name__ == "__main__":
                 with st.spinner("Summarizing data..."):
                     summary = summary_chain.invoke({
                         "dataframe": res.to_dict()
+                        , "user_query": user_query
                         }).content.strip()
             st.write("---")
             st.subheader("Summary:")
